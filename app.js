@@ -5,6 +5,18 @@ const socket = require("socket.io");
 const io = socket(http);
 
 
+/**
+ * Event when the client tries to connect to the
+ * server
+ */
+io.on('connection', (socket)=>{
+   console.log("one client connected");
+
+   //When the client is closed
+   socket.on('disconnect', ()=>{
+       console.log("One client disconnected");
+   })
+})
 
 
 /**
