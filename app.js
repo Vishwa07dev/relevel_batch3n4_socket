@@ -12,15 +12,9 @@ const io = socket(http);
 io.on('connection', (socket)=>{
    console.log("one client connected");
 
-   /**
-    * Send some message to the client after 5 seconds
-    * of connection
-    */
-   setTimeout(()=>{
-       socket.emit('testingEvent', {
-           description : "This is a custom event message"
-       })
-   }, 5000);
+   socket.on("clientEvent", (data)=>{
+       console.log(data);
+   })
 
    //When the client is closed
    socket.on('disconnect', ()=>{
