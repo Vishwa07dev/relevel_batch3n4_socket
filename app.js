@@ -16,14 +16,19 @@ io.on('connection', (socket)=>{
    clientCount++;
 
    /**
-    * Broadcast the messages to all the client
+    * Broadcast the messages to all the clients except this one
     */
-   io.sockets.emit('broadcast', {description : "clients connected = "+ clientCount})
+
+   // For the client which is getting connected
+   socket.emit('newclientconnect', {description : "Hey Welcome !"});
+   
+   // For broadcasting to every other client
+   socket.broadcast.emit('newclientconnect', {description : "Cients count :"+clientCount});
    //When the client is closed
    socket.on('disconnect', ()=>{
        console.log("One client disconnected");
        clientCount--;
-       io.sockets.emit('broadcast', {description : "clients connected = "+ clientCount})
+       io.sockets.emit('newclientconnect', {description : "clients connected = "+ clientCount})
 
    })
 })

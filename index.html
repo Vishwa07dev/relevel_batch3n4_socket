@@ -6,7 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        socket.on('broadcast', function(data){
+        socket.on('newclientconnect', function(data){
            document.body.innerHTML = "";
            document.write(data.description);
         });
