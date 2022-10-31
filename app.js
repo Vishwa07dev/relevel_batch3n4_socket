@@ -20,15 +20,21 @@ io.on('connection', (socket)=>{
     */
 
    // For the client which is getting connected
-   socket.emit('newclientconnect', {description : "Hey Welcome !"});
+   socket.emit('newclientconnect', {description : `
+    <form action="chatPage.html">
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name"><br><br>
+    <input type="submit" value="Submit">
+    </form>
+`});
    
    // For broadcasting to every other client
-   socket.broadcast.emit('newclientconnect', {description : "Cients count :"+clientCount});
+   socket.broadcast.emit('joined', {description : "New client joined. <br> Clients count :"+clientCount});
    //When the client is closed
    socket.on('disconnect', ()=>{
        console.log("One client disconnected");
        clientCount--;
-       io.sockets.emit('newclientconnect', {description : "clients connected = "+ clientCount})
+       io.sockets.emit('newclientconnect', {description : "Clients count :"+clientCount})
 
    })
 })
@@ -39,6 +45,9 @@ io.on('connection', (socket)=>{
  */
 app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/index.html");
+})
+app.get("/chatPage.html", (req, res)=>{
+    res.sendFile(__dirname + "/chatPage.html");
 })
 
 http.listen(8888,()=>{
