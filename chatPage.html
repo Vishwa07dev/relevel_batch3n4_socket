@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Chat </title>
+    </head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function sentChat(){
+            document.write("<br>"+message);
+        }
+        var socket = io();
+        socket.on('joined', function(data){
+           document.write("<br>"+data.description);
+        });
+    </script>
+    <body>
+        <form action="sentChat(message)">
+            <label for="message">Message: </label>
+            <input type="text" id="message" name="message"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <br>
+        Chat history
+    </body>
+</html>
