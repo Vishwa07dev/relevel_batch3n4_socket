@@ -10,26 +10,31 @@ const io = socket(http);
  * server
  */
 
-let clientCount = 0;
+const users = [] ;
 io.on('connection', (socket)=>{
-   console.log("one client connected");
-   clientCount++;
 
-   /**
-    * Broadcast the messages to all the clients except this one
-    */
+    socket.on('setUserName', (userName)=>{
+        console.log("Set User Name request " + userName);
+       //Write the logic to validate if the userName alread picked
+       if(users.indexOf(userName) < 0){
+           console.log('user name doesnot exist');
+           //userName is new
+           users.push(userName);
+           socket.emit('userAllowed', {
+               username : userName
+           });
+       }else{
+        console.log('user name already exist');
+           socket.emit('userExists' , 'username already exists ! Try something new');
+       }
+    });
 
-   // For the client which is getting connected
-   socket.emit('newclientconnect', {description : "Hey Welcome !"});
+    socket.on('msg', (data)=>{
+        io.sockets.emit('newMessage', data);
+    });
    
-   // For broadcasting to every other client
-   socket.broadcast.emit('newclientconnect', {description : "Cients count :"+clientCount});
-   //When the client is closed
-   socket.on('disconnect', ()=>{
-       console.log("One client disconnected");
-       clientCount--;
-       io.sockets.emit('newclientconnect', {description : "clients connected = "+ clientCount})
-
+    socket.on('disconnect', ()=>{
+      
    })
 })
 
